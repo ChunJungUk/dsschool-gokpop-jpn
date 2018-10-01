@@ -1,0 +1,206 @@
+<div id="wrap">
+	<header id='Layout_header'>
+		<div class='header_inner'>
+			<h1><span>KPOP</span> Online Class</h1>
+			<p>"Learn from the <span style="word-break: keep-all;">best&nbsp;K&#8209;Pop&nbsp;dance&nbsp;teacher<span>"</p>
+		</div>
+	</header>
+
+	<div id="Layout_content">
+		<article class='content_inner'>
+
+			<div class='section_title'><h2>Class #<span id='class_no'></span> Ends Soon</h2></div>
+			
+			<div class='discount_timer_wrap'>
+				<div class='discount_tag'><strong>50%</strong><span>DISCOUNT</span></div>
+				<div class='discount_timer'><span id='timer_hour'>&nbsp;&nbsp;</span><span id='timer_minute'>&nbsp;&nbsp;</span><span id='timer_second'>&nbsp;&nbsp;</span></div>
+			</div>
+
+			<div class='major_agency_wrap'>
+				<p>
+					The actual curriculum for K-pop trainees at<br/>
+					<strong>3 major agencies(SM/JYP/YG)</strong><br/>
+					is now available online just for you.
+				</p>
+				<div><%= image_tag "icon_sm.png" %><%= image_tag "icon_jyp.png" %><%= image_tag "icon_yg.png" %></div>
+			</div>
+			<div class='video_wrap'>
+				<div style="padding:56.25% 0 0 0;position:relative;"><iframe id="video_iframe" src="https://player.vimeo.com/video/288933179?title=0&byline=0&portrait=0" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
+			</div>
+			
+			<div class='intro_wrap'>
+				<div class='intro_inner'>
+					<div class='intro_img'><%= image_tag "img_profile.png" %></div>
+					<div class='intro_text'>
+						<span>KPOP ENTERTAINMENT<br/>Dance Trainer</span>
+						<strong>Kyung  Ha Shim</strong>
+						<p>Choreographer Kyung Ha Shim, who danced with K-pop stars and directed many K-pop idol group’s choreography.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class='section_title'><h2>DIRECTED KPOP STAR LIST</h2></div>
+			<div class='starList_wrap'>
+				<div>
+					<span class='star1'></span>
+					<span class='star2'></span>
+					<span class='star3'></span>
+				</div>
+				<div>
+					<span class='star4'></span>
+					<span class='star5'></span>
+					<span class='star6'></span>
+					<span class='star7'></span>
+				</div>
+			</div>
+
+			<div class='section_title'><h2>CLASS CURRICULUM</h2></div>
+			<div class='curriculum_wrap'>
+				<ol>
+					<li>2NE1's dance technique, <strong>'Isolation'</strong></li>
+					<li>Big Bang's  dance technique, <strong>'Bounce'</strong></li>
+					<li>Girl Friend's dance technique, <strong>'Spread the arm'</strong></li>
+					<li>Girls' Generation's dance technique, <strong>'Wave'</strong></li>
+					<li>BoA's dance technique, <strong>'Rhythm'</strong></li>
+					<li>PSY's dance technique, <strong>'Step'</strong></li>
+					<li>Twice's dance technique, <strong>'Waack'</strong></li>
+				</ol>
+			</div>
+            
+            <div class='section_title' style="margin-top: 20px;"><h2>Special VIP package includes</h2></div>
+			<div class='curriculum_wrap'>
+				<ol>
+					<li>Limited time <strong>50% discount</strong></li>
+					<li>Monthly feedback session from <strong>K-Pop directors</strong></li>
+					<li>Up to 10 connected <strong>Devices</strong></li>
+					<li>Chance to win a trip to <strong>K-pop audition</strong> in Seoul</li>
+				</ol>
+			</div>
+
+		</article>
+	</div>
+
+	<footer id='Layout_footer'>
+		<div class='footer_inner'>
+			<p>111, Teheran-ro, Gangnam-gu, Seoul, Republic of Korea<br/>
+			<p>contact: kpop@dsschool.co.kr<br/>
+			Copyright 2018 © The Next School Inc.</p>
+		</div>
+	</footer>
+
+	<nav id='layout_nav'>
+		<div class='nav_inner'>
+			<!--<div class='discount_nav'><span>Special</span><span>Discount</span><strong>50%</strong></div>-->
+			<a id="link_register" href="https://www.gokpop.dance/purchase?product_id=801553"><button>Register the class</button></a>
+		</div>
+	</nav>
+</div>
+<div class="lds-ring hide" style="z-index: 9999;"><div></div><div></div><div></div><div></div></div>
+
+<% content_for :javascript do %>
+  <!-- 마케팅 추적 코드 -->
+  <script>
+    console.log(sessionStorage.getItem('ds:exp:id'));
+    console.log(sessionStorage.getItem('ds:exp:variantId'));
+    fbq('track', 'ViewContent');
+    // mixpanel
+    mixpanel.identify(getUid());
+    mixpanel.track('LandingPage',{
+        'url': window.location.pathname,
+        'optimize_exp_id': sessionStorage.getItem('ds:exp:id'),
+        'optimize_variant_id': sessionStorage.getItem('ds:exp:variantId'),
+    });
+
+    $(function () {
+        var position_half = $('.video_wrap').offset().top
+        var position_end = $('.intro_wrap').offset().top
+        var is_visited_half_position = false;
+        var is_visited_end_position = false;
+        
+        $(window).scroll(function() {
+            if($(window).scrollTop() > position_half && !is_visited_half_position) {
+                fbq('trackCustom', 'Landing_Scroll_Half');
+                mixpanel.track('Landing_scroll_half',{
+                    'url': window.location.pathname,
+                    'optimize_exp_id': sessionStorage.getItem('ds:exp:id'),
+                    'optimize_variant_id': sessionStorage.getItem('ds:exp:variantId'),
+                });
+                is_visited_half_position = true;
+            }else if($(window).scrollTop() > position_end && !is_visited_end_position) {
+                fbq('trackCustom', 'Landing_Scroll_End');
+                mixpanel.track('Landing_scroll_end',{
+                    'url': window.location.pathname,
+                    'optimize_exp_id': sessionStorage.getItem('ds:exp:id'),
+                    'optimize_variant_id': sessionStorage.getItem('ds:exp:variantId'),
+                });
+                is_visited_end_position = true;
+            }
+        });
+        
+        $('#link_register').click(function(){
+            $('.lds-ring').removeClass('hide');
+            ga('send', 'event', 'btn_register', 'click');
+            console.log('click');
+            fbq('track', 'InitiateCheckout');
+            mixpanel.track('Landing_CTA',{
+                'url': window.location.pathname,
+                'optimize_exp_id': sessionStorage.getItem('ds:exp:id'),
+                'optimize_variant_id': sessionStorage.getItem('ds:exp:variantId'),
+            });
+        });
+    });
+
+    // fullstory
+    FS.identify(getUid());
+  </script>
+
+  <script>
+  /* 날짜 입력 */
+    var startDate = new Date("Sep 17, 2018 00:00:00");
+    var baseDate = new Date();
+    baseDate.setDate(new Date().getDate() + 1);
+    baseDate.setHours(0);
+    baseDate.setMinutes(0);
+    baseDate.setSeconds(0);
+    var countDownDate = baseDate.getTime();
+
+    var class_no = '';
+    var now = '';
+    var distance = '';
+    var hours = '';
+    var minutes = '';
+    var seconds = '';
+
+    function startInterval(seconds, callback) { callback(); return setInterval(callback, seconds * 1000); }
+    function updateTimer() {
+      now = new Date().getTime();
+      class_no = Math.ceil((now - startDate.getTime()) / (1000 * 60 * 60 * 24));
+      if (String(class_no).length < 2) { class_no = '00' + class_no; } else if (String(class_no).length < 3) { class_no = '0' + class_no; }
+      document.getElementById("class_no").innerHTML = class_no;
+
+      distance = countDownDate - now;
+      if (distance < 0) {
+        baseDate.setDate(baseDate.getDate() + 1);
+        countDownDate = baseDate.getTime();
+        distance = countDownDate - now;
+      }
+
+      hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      if (hours >= 0 && minutes >= 0 && seconds >= 0) {
+        if (String(hours).length < 2) { hours = '0' + hours; }
+        if (String(minutes).length < 2) { minutes = '0' + minutes; }
+        if (String(seconds).length < 2) { seconds = '0' + seconds; }
+
+        document.getElementById("timer_hour").innerHTML = hours;
+        document.getElementById("timer_minute").innerHTML = minutes;
+        document.getElementById("timer_second").innerHTML = seconds;
+      }
+    }
+    startInterval(1, updateTimer);
+  </script>
+
+<% end %>
+

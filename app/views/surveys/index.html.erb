@@ -1,0 +1,232 @@
+<div id="wrap" class="surveys-page">
+  <header id='Layout_header'>
+		<div class='header_inner'>
+			<h1><span>KPOP</span> Online Class</h1>
+		</div>
+	</header>
+  <div class='section_title'></div>
+  <div id="Layout_content">
+    <div class="owl-carousel owl-theme">
+      <% @survey_texts.each_with_index do |survey_text, index| %>
+        <div class="item single" data-question-id="<%= survey_text.question_id %>">
+          <div class="question_wrap">
+            <h1 class="question">Q<%= index %>. <%= survey_text.question_text %></h1>  
+          </div>
+          <div class="answer_wrap">
+            <ul>
+              <% 1.upto(7) do |answer_id| %>
+                <% if survey_text["answer#{answer_id}_text"] %>
+                  <li>
+                    <input type="radio" name="survey<%= survey_text.question_id %>" id="survey<%= survey_text.question_id %>_<%= answer_id %>" value="1">
+                    <label for="survey<%= survey_text.question_id %>_<%= answer_id %>"><%= survey_text["answer#{answer_id}_text"] %></label>
+                    <div class="check"></div>
+                  </li>
+                <% end %>
+              <% end %>
+            </ul>
+          </div>
+          <a class="btn-next btn-primary" href="#">Next</a>
+        </div>
+      <% end %>
+      <div class="item survey-loading">
+        <h2>Analyzing your answers</h2>
+        <p>Please wait until we review your answers and match you with a customized K-pop dance training course</p>
+        <%# <div class="loading">
+          <ul>
+            <li>이전 수강생의 설문 데이터와 매칭<div class='oval'></div></li>
+            <li>프로필에 맞는 커리큘럼 매칭<div class='oval'></div></li>
+            <li>수강 목표에 맞는 코스 매칭<div class='oval'></div></li>
+            <li>코스를 이수할 수 있을 지 검토<div class='oval'></div></li>
+          </ul>
+        </div> %>
+        <div class="progress">
+          <p id="progress-text">0%</p>
+          <div class="progress-bar-background">
+            <div id="progress-bar"></div>
+          </div>
+        </div>
+      </div>
+      <div class="item survey-complete">
+        <div>
+          <div id="survey-complete-info-text">
+            <h2>Your customized K-pop dance training program is now ready!</h2>
+            <p>Enter your email to see what your custom training program looks like.</p>
+          </div>
+          <%= form_for @user, remote: true do |f| %>
+            <%= hidden_field_tag :redirect_to, suggestions_url %>
+            <%= hidden_field_tag :survey_params %>
+            <div>
+              <%= f.email_field :email, placeholder: "Please enter your email address." %>
+              <%= f.hidden_field :mixpanel_id %>
+            </div>
+            <div>
+              <%= f.submit "See my custom program >", id: "btn-submit", class: "btn-primary", style: "width: 297px;" %>
+            </div>
+            <div class="lds-ring hide" style="z-index: 9999;"><div></div><div></div><div></div><div></div></div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  var surveyParams = [];
+  var currentOwlOrder = 1;
+  var owl = $('.owl-carousel');
+  owl.owlCarousel({
+    loop:false,
+    margin:10,
+    nav:false,
+    dots: false,
+    touchDrag: false,
+    rewind: false,
+    smartSpeed: 1000,
+    mouseDrag: false,
+    responsive:{
+      0:{
+        items:1
+      },
+      600:{
+        items:1
+      },
+      1000:{
+        items:1
+      }
+    }
+  });
+
+  // Configuration for browser history. (for the prev/next button)
+  var stateObject = {page: 1};
+  history.pushState(stateObject, "page 1");
+  $('.surveys-page .btn-next').off().on('click', function(e){
+    e.preventDefault();
+    var item = $(this).closest('.item');
+    var checked = item.find('input:checked');
+    var questionId = item.data('question-id');
+
+    if(checked.length === 0) {
+      alert("최소 하나 이상을 선택해야 합니다.");
+      return false;
+    }
+
+    // start mixpanel
+    var currentPage = $(this).closest('.item');
+    var nextQuestionId = currentPage.data('question-id') + 1;
+    var surveyTotalCount = $('.surveys-page .item').length - 2;
+
+    if(nextQuestionId <= surveyTotalCount) {
+      var mpEventName = "SurveyPage" + nextQuestionId;
+    } else {
+      var mpEventName = "SurveyComplete";
+    }
+
+    
+    // if(mpEventName){
+    //   track_event(mpEventName);
+    // }
+    // end mixpanel
+
+    // Generate the survey result to JSON. (for storing database)
+    surveyData = {};
+    surveyData['question_id'] = questionId;
+
+    item.find('li').each(function(index, element) {
+      var input = $(element).find("input");
+      var checked = input.is(":checked");
+      surveyData["answer" + (index + 1) + "_selected"] = checked;
+    });
+    surveyParams.push(surveyData);
+
+    // Log browser history.
+    var stateObject = {page: questionId + 1};
+    history.pushState(stateObject, "page " + (questionId + 1));
+
+    // next carousel
+    currentOwlOrder++;
+    owl.trigger('next.owl.carousel');
+  });
+
+  // Try to move the prev / next survey using browser history.
+  $(window).on('popstate', function (e) {
+    var state = e.originalEvent.state;
+    if (state["page"] !== undefined) {
+      if(currentOwlOrder > state["page"]) {
+        currentOwlOrder--;
+        owl.trigger('prev.owl.carousel');
+      } else {
+        currentOwlOrder++;
+        owl.trigger('next.owl.carousel');
+      }
+    } else {
+      window.location = "/";
+    }
+  });
+
+  // Toggle radio buttons (or checkbox buttons)
+  $('.surveys-page .item .check').off().on('click', function(){
+    var input  = $(this).closest('li').find('input');
+    var checked = input.prop('checked');
+
+    if (checked === true) {
+      input.prop('checked', false);
+    } else {
+      input.prop('checked', true);
+    }
+  });
+
+  // loading & survey complete
+  owl.on('changed.owl.carousel', function (event) {
+    var owlCount = event.item.count;     // Number of items
+    var owlIndex = event.item.index;     // Position of the current item
+
+    // The loading message.
+    var loadingMessages = $('.survey-loading li:not(.active)');
+    var interval = 1100;
+    if(owlIndex == (owlCount - 2)) {
+      // var loadingHandler = setInterval(function(){
+      //   var activeLoadingMessage = $('.survey-loading li.active');
+      //   var nonActiveloadingMessage = $('.survey-loading li:not(.active)').first();
+
+      //   if (loadingMessages.length == activeLoadingMessage.length) {
+      //     clearInterval(loadingHandler);
+      //   }
+      //   nonActiveloadingMessage.addClass('active');
+      // }, interval);
+
+      var progressBar = document.getElementById("progress-bar");
+      var progressText = document.getElementById("progress-text");
+      var width = 0;
+      var id = setInterval(frame, 50);
+      function frame() {
+        if (width >= 100) {
+          clearInterval(id);
+          
+          // next carousel
+          currentOwlOrder++;
+          owl.trigger('next.owl.carousel');
+        } else {
+          width++; 
+          progressBar.style.width = width + '%'; 
+          progressText.innerHTML = width * 1  + '%';
+        }
+      }
+    }
+  });
+
+  $('.surveys-page #btn-submit').on('click', function(e){
+    e.preventDefault();
+    $('.lds-ring').removeClass('hide');
+    $('#user_mixpanel_id').val(getUid());
+    $('#survey_params').val(JSON.stringify(surveyParams));
+
+    var email = $('#user_email').val();
+    if(email.length > 0){
+      $('.surveys-page form#new_user').submit();
+    }else{
+      alert("Please enter your email address.");
+      $(".lds-ring").addClass("hide");
+    }
+  });
+</script>

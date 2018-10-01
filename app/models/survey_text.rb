@@ -1,0 +1,2 @@
+class SurveyText < ApplicationRecord
+end
