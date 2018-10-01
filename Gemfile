@@ -62,3 +62,4 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'jquery-rails', '~> 4.3.3'
 gem 'pry', '~> 0.11.3'
+gem 'pg', '~> 1.1.3'
