@@ -37,7 +37,7 @@ SurveyText.create!([{
     question_text: "What is your dancing experience like?",
     answer1_text: "I'm a beginner with no experience",
     answer2_text: "I dance for hobby",
-    answer3_text: "I'm serious about dancing (1+ years of class)",
+    answer3_text: "I'm serious about dancing\n\n(1+ years of class)",
     answer4_text: "I'm a professional dancer",
     is_active: true,
   },{

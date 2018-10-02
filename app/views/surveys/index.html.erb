@@ -1,7 +1,7 @@
 <div id="wrap" class="surveys-page">
   <header id='Layout_header'>
 		<div class='header_inner'>
-			<h1><span>KPOP</span> Online Class</h1>
+			<a href="/"><h1><span>KPOP</span> Online Class</h1></a>
 		</div>
 	</header>
   <div class='section_title'></div>
@@ -10,7 +10,8 @@
       <% @survey_texts.each_with_index do |survey_text, index| %>
         <div class="item single" data-question-id="<%= survey_text.question_id %>">
           <div class="question_wrap">
-            <h1 class="question">Q<%= index %>. <%= survey_text.question_text %></h1>  
+            <h1 class="question">Q<%= index + 1 %><span style="font-size: 18px; color: gray;">/Q7</span></h1>  
+            <h1 class="question"><%= survey_text.question_text %></h1>  
           </div>
           <div class="answer_wrap">
             <ul>
@@ -18,7 +19,7 @@
                 <% if survey_text["answer#{answer_id}_text"] %>
                   <li>
                     <input type="radio" name="survey<%= survey_text.question_id %>" id="survey<%= survey_text.question_id %>_<%= answer_id %>" value="1">
-                    <label for="survey<%= survey_text.question_id %>_<%= answer_id %>"><%= survey_text["answer#{answer_id}_text"] %></label>
+                    <label for="survey<%= survey_text.question_id %>_<%= answer_id %>"><%= simple_format(survey_text["answer#{answer_id}_text"]) %></label>
                     <div class="check"></div>
                   </li>
                 <% end %>
@@ -107,7 +108,7 @@
     var questionId = item.data('question-id');
 
     if(checked.length === 0) {
-      alert("최소 하나 이상을 선택해야 합니다.");
+      alert("Please select an answer.");
       return false;
     }
 
