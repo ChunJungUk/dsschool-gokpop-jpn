@@ -1,3 +1,5 @@
+require 'rest-client'
+
 class UsersController < ApplicationController
   def create
     user = User.where(email: params[:user][:email]).first
@@ -7,20 +9,44 @@ class UsersController < ApplicationController
     end
 
     JSON.parse(params[:survey_params]).each do | survey_param | 
-      survey = Survey.new(
-        user_id: user.id,
-        question_id: survey_param["question_id"],
-        answer1_selected: survey_param["answer1_selected"],
-        answer2_selected: survey_param["answer2_selected"],
-        answer3_selected: survey_param["answer3_selected"],
-        answer4_selected: survey_param["answer4_selected"],
-        answer5_selected: survey_param["answer5_selected"],
-        answer6_selected: survey_param["answer6_selected"],
-        answer7_selected: survey_param["answer7_selected"],
-      )
-      survey.save
+      user.surveys.create!(survey_param)
     end
+
+    begin
+      register_mailchimp_list(user)
+    rescue => exception
+      puts exception.to_s 
+    end
+
     redirect_to [:suggestions]
+  end
+
+  def register_mailchimp_list(user)
+    key = Digest::MD5.hexdigest(user.email)
+    list_key = '56702427e5' # mailchimp list - [MC] Kpop Survey Completed
+
+    body = {
+      'email_address' => user.email,
+      'status' => 'subscribed',
+      'merge_fields' => {},
+    }
+
+    user.surveys.each do |s|
+      question = "Q#{s.question_id}"
+      answers = ""
+      1.upto(7) do |answer_id|
+        if s.send("answer#{answer_id}_selected") == true
+          answers += answers.size == 0 ? "A#{answer_id}" : ",A#{answer_id}"
+        end
+      end
+      body['merge_fields'][question] = answers
+    end
+
+    RestClient::Request.execute(method: :put,
+      url: "https://us6.api.mailchimp.com/3.0/lists/" + list_key + "/members/" + key,
+      payload: body.to_json,
+      user: 'anything',
+      password: 'ccb91b159d00c4bb0b353a14b4ebed7f-us6')
   end
 
 private
