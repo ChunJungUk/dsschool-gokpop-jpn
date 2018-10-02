@@ -104,12 +104,8 @@
     console.log(sessionStorage.getItem('ds:exp:variantId'));
     fbq('track', 'ViewContent');
     // mixpanel
-    mixpanel.identify(getUid());
-    mixpanel.track('LandingPage',{
-        'url': window.location.pathname,
-        'optimize_exp_id': sessionStorage.getItem('ds:exp:id'),
-        'optimize_variant_id': sessionStorage.getItem('ds:exp:variantId'),
-    });
+    track_identify(getUid(), get_current_email());
+    track_event('LandingPage');
 
     $(function () {
         var position_half = $('.video_wrap').offset().top
@@ -120,19 +116,11 @@
         $(window).scroll(function() {
             if($(window).scrollTop() > position_half && !is_visited_half_position) {
                 fbq('trackCustom', 'Landing_Scroll_Half');
-                mixpanel.track('Landing_scroll_half',{
-                    'url': window.location.pathname,
-                    'optimize_exp_id': sessionStorage.getItem('ds:exp:id'),
-                    'optimize_variant_id': sessionStorage.getItem('ds:exp:variantId'),
-                });
+                track_event('Landing_scroll_half');
                 is_visited_half_position = true;
             }else if($(window).scrollTop() > position_end && !is_visited_end_position) {
                 fbq('trackCustom', 'Landing_Scroll_End');
-                mixpanel.track('Landing_scroll_end',{
-                    'url': window.location.pathname,
-                    'optimize_exp_id': sessionStorage.getItem('ds:exp:id'),
-                    'optimize_variant_id': sessionStorage.getItem('ds:exp:variantId'),
-                });
+                track_event('Landing_scroll_end');
                 is_visited_end_position = true;
             }
         });
@@ -142,11 +130,7 @@
             ga('send', 'event', 'btn_register', 'click');
             console.log('click');
             fbq('track', 'InitiateCheckout');
-            mixpanel.track('Landing_CTA',{
-                'url': window.location.pathname,
-                'optimize_exp_id': sessionStorage.getItem('ds:exp:id'),
-                'optimize_variant_id': sessionStorage.getItem('ds:exp:variantId'),
-            });
+            track_event('Landing_CTA');
         });
     });
 

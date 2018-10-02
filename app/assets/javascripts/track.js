@@ -1,4 +1,32 @@
 //*** mixpanel & fullstory
+function track_identify(id, email) {
+  // start mixpanel
+  if (email) {
+    console.log(email);
+    mixpanel.identify(email);
+  } else {
+    console.log(id);
+    mixpanel.identify(id);
+  }
+  // start FullStory Codes
+  FS.identify(id);
+  if (email) {
+    FS.identify(id, {
+      email: email
+    });
+  }
+  // end FullStory Codes
+}
+
+function track_event(eventName) {
+  mixpanel.track(eventName, {
+    url: window.location.pathname,
+    optimize_exp_id: sessionStorage.getItem('ds:exp:id'),
+    optimize_variant_id: sessionStorage.getItem('ds:exp:variantId'),
+  });
+}
+
+
 function getUid(){
   var uid = localStorage.getItem('dsschool-uid');
   if(!uid){
@@ -8,7 +36,6 @@ function getUid(){
     uid = generateUid();
     localStorage.setItem('dsschool-uid', uid);
   }
-  console.log(uid);
   return uid;
 }
 
