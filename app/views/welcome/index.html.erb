@@ -37,13 +37,12 @@ div#bg_landing:before {
   <script>
     console.log(localStorage.getItem('ds:exp:id'));
     console.log(localStorage.getItem('ds:exp:variantId'));
-    fbq('track', 'ViewContent');
-    // mixpanel
     track_identify(getUid(), get_current_email());
     track_event('LandingPage');
 
-    // fullstory
-    FS.identify(getUid());
+    $('#link_surveys').off().on('click', function(){
+      track_event('LandingCTA');
+    }); 
   </script>
 <% end %>
 

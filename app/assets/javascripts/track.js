@@ -8,12 +8,14 @@ function track_identify(id, email) {
     console.log(id);
     mixpanel.identify(id);
   }
+ 
   // start FullStory Codes
-  FS.identify(id);
   if (email) {
     FS.identify(id, {
       email: email
     });
+  }else{
+    FS.identify(id);
   }
   // end FullStory Codes
 }

@@ -183,26 +183,23 @@
         
         $(window).scroll(function() {
             if($(window).scrollTop() > position_half && !is_visited_half_position) {
-                fbq('trackCustom', 'Landing_Scroll_Half');
-                track_event('Landing_scroll_half');
-                is_visited_half_position = true;
+              fbq('trackCustom', 'Landing_Scroll_Half');
+              track_event('Landing_scroll_half');
+              is_visited_half_position = true;
             }else if($(window).scrollTop() > position_end && !is_visited_end_position) {
-                fbq('trackCustom', 'Landing_Scroll_End');
-                track_event('Landing_scroll_end');
-                is_visited_end_position = true;
+              fbq('trackCustom', 'Landing_Scroll_End');
+              track_event('Landing_scroll_end');
+              is_visited_end_position = true;
             }
         });
         
         $('#link_register').click(function(){
-            $('.lds-ring').removeClass('hide');
-            ga('send', 'event', 'btn_register', 'click');
-            console.log('click');
-            fbq('track', 'InitiateCheckout');
-            track_event('Landing_CTA');
+          $('.lds-ring').removeClass('hide');
+          ga('send', 'event', 'btn_register', 'click');
+          fbq('track', 'InitiateCheckout');
+          track_event('Product_Checkout');
         });
     });
-     // fullstory
-    FS.identify(getUid());
   </script>
 
    <script>
