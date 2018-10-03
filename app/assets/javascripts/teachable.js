@@ -30,22 +30,14 @@ function initTeachableUid(){
     }
 }
 
-function initTeachableExpId(){
+function initTeachableExp(){
     var exp = getQueryParam(document.URL, "exp");
     if(exp){
-      localStorage.setItem('ds:exp:id', exp);
-    }
-}
-
-function initTeachableVariantId(){
-    var variant = getQueryParam(document.URL, "variant");
-    if(variant){
-      localStorage.setItem('ds:exp:variantId', variant);
+      localStorage.setItem('ds:exp', exp);
     }
 }
 
 function initTeachableParmas(){
   initTeachableUid();
-  initTeachableExpId();
-  initTeachableVariantId();
+  initTeachableExp();
 }

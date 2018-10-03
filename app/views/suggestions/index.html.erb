@@ -195,6 +195,13 @@
         
         $('#link_register').click(function(){
           $('.lds-ring').removeClass('hide');
+
+          // mixpanel codes
+          mixpanel.people.set_once({
+            "$email": get_current_email(),
+            "$optimize_exp": localStorage.getItem('ds:exp'),
+          });
+          
           ga('send', 'event', 'btn_register', 'click');
           fbq('track', 'InitiateCheckout');
           track_event('Product_Checkout');

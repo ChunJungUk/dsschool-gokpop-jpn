@@ -35,8 +35,6 @@ div#bg_landing:before {
 <% content_for :javascript do %>
   <!-- 마케팅 추적 코드 -->
   <script>
-    console.log(localStorage.getItem('ds:exp:id'));
-    console.log(localStorage.getItem('ds:exp:variantId'));
     track_identify(getUid(), get_current_email());
     track_event('LandingPage');
 
