@@ -13,7 +13,7 @@ div#bg_landing:before {
 
 </style>
 
-<div id="bg_landing" style="background:#000 url(<%= asset_path("bg_kyung_ha_shim.png") %>) no-repeat; background-size: cover !important; background-position: center !important; width: 100%; height: 100%;">
+<div id="bg_landing" style="background:#000 url(<%= asset_path("bg_kyung_ha_shim.png") %>) no-repeat; background-size: cover !important; background-position: center !important; width: 100%; height: calc(100% - 100px);">
   <header id="Layout_header">
 		<div class="header_inner" style="position: absolute; top: 37%; padding: 0; width: 100%;">
 			<p style="font-size: 32px; color: #fff; font-weight: bold; font-style: normal;">Experience <br> the real K-pop idol <br>dance training</p>
@@ -25,6 +25,12 @@ div#bg_landing:before {
 		</div>
 	</header>
 </div>
+<footer id="Layout_footer" style="background-color: #131313;">
+  <div class="footer_inner" style="padding: 30px 0 30px 0;">
+    <p style="color: #fff;">111, Teheran-ro, Gangnam-gu, Seoul, Republic of Korea<br></p>
+    <p style="color: #fff;">contact: kpop@dsschool.co.kr<br>Copyright 2018 © The Next School Inc.</p>
+  </div>
+</footer>
 
 <% content_for :javascript do %>
   <!-- 마케팅 추적 코드 -->
