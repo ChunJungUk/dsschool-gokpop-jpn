@@ -194,10 +194,11 @@
         });
         
         $('#link_register').click(function(){
+          console.log('base');
           $('.lds-ring').removeClass('hide');
 
           // mixpanel codes
-          mixpanel.people.set_once({
+          mixpanel.people.set({
             "$email": get_current_email(),
             "$optimize_exp": localStorage.getItem('ds:exp'),
           });
