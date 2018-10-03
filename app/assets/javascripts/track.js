@@ -21,8 +21,8 @@ function track_identify(id, email) {
 function track_event(eventName) {
   mixpanel.track(eventName, {
     url: window.location.pathname,
-    optimize_exp_id: sessionStorage.getItem('ds:exp:id'),
-    optimize_variant_id: sessionStorage.getItem('ds:exp:variantId'),
+    optimize_exp_id: localStorage.getItem('ds:exp:id'),
+    optimize_variant_id: localStorage.getItem('ds:exp:variantId'),
   });
 }
 
