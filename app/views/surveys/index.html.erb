@@ -225,7 +225,12 @@
 
       var email = $('#user_email').val();
       if(email.length > 0){
-        track_event('Email_Lead');
+        mixpanel.track('Email_Lead', {
+          url: window.location.pathname,
+          optimize_exp: localStorage.getItem('ds:exp'),
+          email: email,
+        });
+
         ga('send', 'event', 'btn_email_lead', 'click');
         $('.surveys-page form#new_user').submit();
       }else{
