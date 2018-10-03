@@ -3,6 +3,8 @@ function track_identify(id, email) {
   // start mixpanel
   if (email) {
     console.log(email);
+    mixpanel.identify(id);
+    mixpanel.alias(email);
     mixpanel.identify(email);
   } else {
     console.log(id);
