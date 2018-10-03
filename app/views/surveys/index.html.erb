@@ -230,7 +230,7 @@
           optimize_exp: localStorage.getItem('ds:exp'),
           email: email,
         });
-
+        set_current_email(email);
         ga('send', 'event', 'btn_email_lead', 'click');
         $('.surveys-page form#new_user').submit();
       }else{

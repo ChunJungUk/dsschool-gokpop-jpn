@@ -88,3 +88,12 @@ function get_current_email() {
   }
   return current_email;
 }
+
+function set_current_email(email) {
+  try {
+    localStorage.setItem("dsschool-email", email);
+  } catch (err) {
+    console.log(err);
+    void 0;
+  }
+}
