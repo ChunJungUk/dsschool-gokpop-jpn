@@ -178,16 +178,19 @@
         });
         
         $('#link_register').click(function(){
-          console.log('base');
+          console.log('ex07 base');
+          
           $('.lds-ring').removeClass('hide');
 
-          // mixpanel codes
-          // if(get_current_email()){
-          //   mixpanel.people.set({
-          //     "$email": get_current_email(),
-          //     "$optimize_exp": localStorage.getItem('ds:exp'),
-          //   });
-          // }
+          // mixpanel code
+          if(get_current_email()){
+            mixpanel.identify(getUid());
+            mixpanel.people.set_once({
+              "$email": get_current_email(),
+              "$optimize_exp": localStorage.getItem('ds:exp'),
+            });
+          }
+          
           ga('send', 'event', 'btn_register', 'click');
           fbq('track', 'InitiateCheckout');
           track_event('Product_Checkout');
