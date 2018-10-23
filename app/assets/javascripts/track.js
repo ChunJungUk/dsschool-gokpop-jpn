@@ -12,13 +12,13 @@ function track_identify(id, email) {
   }
  
   // start FullStory Codes
-  if (email) {
-    FS.identify(id, {
-      email: email
-    });
-  }else{
-    FS.identify(id);
-  }
+  // if (email) {
+  //   FS.identify(id, {
+  //     email: email
+  //   });
+  // }else{
+  //   FS.identify(id);
+  // }
   // end FullStory Codes
 }
 
