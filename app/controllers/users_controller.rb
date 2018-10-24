@@ -43,7 +43,7 @@ class UsersController < ApplicationController
     end
 
     RestClient::Request.execute(method: :put,
-      url: "https://us6.api.mailchimp.com/3.0/lists/" + list_key + "/members/" + key,
+      url: "https://us19.api.mailchimp.com/3.0/lists/" + list_key + "/members/" + key,
       payload: body.to_json,
       user: 'anything',
       password: '5bf38de58317b02997ba7ea947bc9bd1-us19')
