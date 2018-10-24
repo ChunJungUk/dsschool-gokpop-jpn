@@ -46,7 +46,7 @@ class UsersController < ApplicationController
       url: "https://us6.api.mailchimp.com/3.0/lists/" + list_key + "/members/" + key,
       payload: body.to_json,
       user: 'anything',
-      password: 'ccb91b159d00c4bb0b353a14b4ebed7f-us6')
+      password: '5bf38de58317b02997ba7ea947bc9bd1-us19')
   end
 
 private
