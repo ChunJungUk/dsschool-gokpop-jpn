@@ -23,7 +23,7 @@ class UsersController < ApplicationController
 
   def register_mailchimp_list(user)
     key = Digest::MD5.hexdigest(user.email)
-    list_key = '0a8beebdf5' # mailchimp list - Marketing (explzn)
+    list_key = '9df0874414' # mailchimp list - GoKpop Survey Completed (explzn)
 
     body = {
       'email_address' => user.email,
